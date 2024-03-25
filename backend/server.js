@@ -1,4 +1,4 @@
-require('dotenv').config(); // Utilisation de require('dotenv').config()
+require('dotenv').config();
 
 const express = require("express");
 const mongoose = require("mongoose");
@@ -22,11 +22,6 @@ app.use(cors());
      
 });
 
-// app.get('/', (req, res) => {
-//     res.status(200).json({
-        
-//     })
-// })
 const PORT = process.env.PORT || 5000;
 
 
