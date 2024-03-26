@@ -2,6 +2,7 @@
 //dans chaque route qui utilise des opérations asynchrones
 const asyncHandler= require("express-async-handler");
 const User=require("../models/userModel");
+const bcrypt = require("bcryptjs")
 
 const registerUser = asyncHandler( async (req, res) => {
     const {name,email,password}= req.body
@@ -23,14 +24,18 @@ const registerUser = asyncHandler( async (req, res) => {
         throw new Error("Email has already been registered")
      }
 
+     //Encryt password before saving to DB
+     const salt = await bcrypt.genSalt(10)
+     const hashedPassword = await bcrypt.hash(password,salt)
+
      //Creat new user
      const user = await User.create({
         name,
         email,
-        password
+        password: hashedPassword,
      })
  
-     
+
      if(user){
         const {_id,name,email,photo,phone,bio}=user
         res.status(201).json({
