@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const connectDB = require("./config/connectDB.js");
 const userRoute = require("./routes/userRoute.js");
+const errorHandler = require("./middleWare/errorMiddleware.js");
 
 const app = express();
 
@@ -24,6 +25,9 @@ app.use("/api/users", userRoute);
      res.send("Home Page");
      
 });
+
+//Error Middleware
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 
