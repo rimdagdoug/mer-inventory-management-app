@@ -9,7 +9,7 @@ const  generatToken = (id) => {
     return jwt.sign({id}, process.env.JWT_SECRET,{expiresIn: "1d"})
 };
 
-
+//register user
 const registerUser = asyncHandler( async (req, res) => {
     const {name,email,password}= req.body
 
@@ -62,8 +62,13 @@ const registerUser = asyncHandler( async (req, res) => {
         throw new Error("Invalid user data")
      }
 });
+//login user
+const loginUser =asyncHandler (async (req,res) => {
+    res.send("login user")
+});
 
 
 module.exports = {
     registerUser,
+    loginUser
 };
