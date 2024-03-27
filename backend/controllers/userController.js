@@ -209,9 +209,12 @@ const chagePassword= asyncHandler(async(req,res)=>{
         res.status(404)
         throw new Error("old password is incorect");
      }
+    
+});
 
-    
-    
+const forgotPassword= asyncHandler(async(req,res)=>{
+    res.send("forgot password");
+
 });
 
 
@@ -223,4 +226,5 @@ module.exports = {
     loginStatus,
     updateUser,
     chagePassword,
+    forgotPassword,
 };
