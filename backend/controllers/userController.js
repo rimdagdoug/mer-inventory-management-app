@@ -182,8 +182,35 @@ const updateUser= asyncHandler(async(req,res)=>{
 
 //change pasword
 const chagePassword= asyncHandler(async(req,res)=>{
+    const user= await User.findById(req.user._id);
 
-    res.send("password changed")
+    const {oldPassword,password}=req.body;
+
+    if(!user){
+        res.status(404)
+        throw new Error("user not found please signup");
+    }
+
+    //validate
+    if(!oldPassword || !password){
+        res.status(404)
+        throw new Error("please old and new password");
+    }
+
+    //check if old password matches password in BD
+     const passwordIsCorrect = await bcrypt.compare(oldPassword,user.password);
+
+     //save new password
+     if(user && passwordIsCorrect){
+        user.password= password
+        await user.save()
+        res.status(200).send("password change successful")
+     }else{
+        res.status(404)
+        throw new Error("old password is incorect");
+     }
+
+    
     
 });
 
