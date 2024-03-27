@@ -13,6 +13,7 @@ const  generatToken = (id) => {
 
 //register user
 const registerUser = asyncHandler( async (req, res) => {
+    //utilise asyncHandler pour gérer les erreurs asynchrones dans la fonction
     const {name,email,password}= req.body
 
     //validation
@@ -110,7 +111,14 @@ const loginUser =asyncHandler (async (req,res) => {
 });
 
 const logout = asyncHandler(async(req,res) => {
-
+    res.cookie("token", "",{
+        path:"/",
+        httpOnly: true,
+        expires:new Date(0), 
+        sameSite: "none",
+        secure:true
+      });
+      return res.status(200).json({message: "Successfully logged out"});
 });
 
 module.exports = {
