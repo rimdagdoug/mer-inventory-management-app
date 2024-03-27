@@ -51,7 +51,7 @@ const registerUser = asyncHandler( async (req, res) => {
         expires:new Date(Date.now( )+ 1000 * 86400), //1 day
         sameSite: "none",
         secure:true
-      })
+      });
  
 
      if(user){
@@ -84,10 +84,23 @@ const loginUser =asyncHandler (async (req,res) => {
 
     //User exist,check if password is correct
     const passwordIsCorrect = await bcrypt.compare(password, user.password);
+
+    //Generate token
+    const token=generatToken(user._id)
+
+    //send HTTP-only cookie
+    res.cookie("token", token,{
+      path:"/",
+      httpOnly: true,
+      expires:new Date(Date.now( )+ 1000 * 86400), //1 day
+      sameSite: "none",
+      secure:true
+    });
+
     if (user && passwordIsCorrect) {
         const {_id,name,email,photo,phone,bio}=user;
         res.status(200).json({
-            _id,name,email,photo,phone,bio,
+            _id,name,email,photo,phone,bio,token
         });
     }else{
         res.status(400);
