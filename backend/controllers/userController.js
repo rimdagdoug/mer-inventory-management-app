@@ -180,6 +180,14 @@ const updateUser= asyncHandler(async(req,res)=>{
    }
 });
 
+//change pasword
+const chagePassword= asyncHandler(async(req,res)=>{
+
+    res.send("password changed")
+    
+});
+
+
 module.exports = {
     registerUser,
     loginUser,
@@ -187,4 +195,5 @@ module.exports = {
     getUser,
     loginStatus,
     updateUser,
+    chagePassword,
 };
