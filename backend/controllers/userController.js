@@ -5,6 +5,8 @@ const User=require("../models/userModel");
 const jwt = require('jsonwebtoken');
 const bcrypt=require("bcryptjs");
 const { use } = require("../routes/userRoute");
+const Token = require("../models/tokenModel");
+const crypto= require("crypto");
 
 
 const  generatToken = (id) => {
@@ -213,7 +215,23 @@ const chagePassword= asyncHandler(async(req,res)=>{
 });
 
 const forgotPassword= asyncHandler(async(req,res)=>{
-    res.send("forgot password");
+    const {email}= req.body
+    const user = await User.findOne({email})
+
+    if(!user){
+        res.status(404)
+        throw new Error("user does not exist")
+    }
+
+    //create rset token
+    //génère un token de réinitialisation de mot de passe en combinant des octets aléatoires avec l'identifiant unique de l'utilisateur.
+    let resetToken = crypto.randomBytes(32).toString("hex") + user._id
+
+    //hash token before saving to db(l'algorithme de hachage SHA-256)
+    const hashedToken = crypto.createHash("sha256").update(resetToken).digest("hex")
+    console.log(hashedToken)
+
+    res.send("Forgot password")
 
 });
 
