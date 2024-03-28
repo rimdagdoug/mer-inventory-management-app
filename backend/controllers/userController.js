@@ -232,7 +232,8 @@ const forgotPassword= asyncHandler(async(req,res)=>{
 
     //create rset token
     //génère un token de réinitialisation de mot de passe en combinant des octets aléatoires avec l'identifiant unique de l'utilisateur.
-    let resetToken = crypto.randomBytes(32).toString("hex") + user._id
+    let resetToken = crypto.randomBytes(32).toString("hex") + user._id;
+    console.log(resetToken);
 
     //hash token before saving to db(l'algorithme de hachage SHA-256)
     const hashedToken = crypto.createHash("sha256").update(resetToken).digest("hex")
@@ -276,7 +277,36 @@ const forgotPassword= asyncHandler(async(req,res)=>{
 
 //Reset password
 const resetPassword= asyncHandler(async(req,res) => {
-    res.send("reset password")
+    const {password}= req.body
+    const {resetToken} = req.params
+
+    //hash token before then compare to token in db
+    const hashedToken = crypto
+    .createHash("sha256")
+    .update(resetToken)
+    .digest("hex")
+
+    //find token in db
+    const userToken = await Token.findOne({
+        token: hashedToken,
+        expiresAt: {$gt: Date.now()}
+    })
+
+    if (!userToken) {
+        res.status(500)
+        throw new Error("invalid or expired token")
+    }
+
+    //find user
+    const user = await User.findOne({_id: userToken.userId})
+    user.password = password
+    await user.save()
+    res.status(200).json({
+        message: "password reset successful please login"
+    })
+    
+
+
 })
 
 
