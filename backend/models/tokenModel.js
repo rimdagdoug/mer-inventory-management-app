@@ -1,3 +1,4 @@
+// réinitialisation de mot de passe
 const mongoose=require("mongoose");
 
 const tokenSchema = mongoose.Schema({
@@ -15,7 +16,7 @@ const tokenSchema = mongoose.Schema({
         required:true,
     },
     expiresAt:{
-        type: String,
+        type: Date,
         required:true,
     },
 })
