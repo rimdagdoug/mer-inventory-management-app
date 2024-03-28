@@ -7,6 +7,7 @@ const bcrypt=require("bcryptjs");
 const { use } = require("../routes/userRoute");
 const Token = require("../models/tokenModel");
 const crypto= require("crypto");
+const sendEmail = require("../utils/sendEmail");
 
 
 const  generatToken = (id) => {
@@ -223,6 +224,12 @@ const forgotPassword= asyncHandler(async(req,res)=>{
         throw new Error("user does not exist")
     }
 
+    //delete token if it exists in db
+    let token = await Token.findOne({userId: user._id})
+    if(token){
+        await token.deleteOne()
+    }
+
     //create rset token
     //génère un token de réinitialisation de mot de passe en combinant des octets aléatoires avec l'identifiant unique de l'utilisateur.
     let resetToken = crypto.randomBytes(32).toString("hex") + user._id
@@ -249,14 +256,22 @@ const forgotPassword= asyncHandler(async(req,res)=>{
         <p>This rreset link is valid for only 30 minutes</p>
 
         <a href=${resetUrl} clicktracking=off>${resetUrl}</a>
-        
+
         <p>Regards....</p>
         <p>Pinvent Team</p>
 
-    `
+    `;
+    const subject = "Password Reset Request"
+    const send_to = user.email
+    const sent_from = process.env.EMAIL_USER
 
-    res.send("Forgot password")
-
+    try {
+        await sendEmail(subject, message, send_to,sent_from)
+        res.status(200).json({success: true, message: "Reset email send"})
+    } catch (error) {
+        res.status(500)
+        throw new Error("Email not sent, please try again")
+    }
 });
 
 

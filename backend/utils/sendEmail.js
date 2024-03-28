@@ -17,12 +17,12 @@ const sendEmail = async(subject, message,send_to, sent_from, reply_to)=>{
     //option for sending email
     const options = {
         from: sent_from,
-        from: send_to,
+        to: send_to,
         reply_to: reply_to,
         subject: subject,
         html: message,
-
-    }
+    };
+    
 
     //send the email
     transporter.sendMail(options, function (err,info) {
