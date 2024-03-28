@@ -229,7 +229,31 @@ const forgotPassword= asyncHandler(async(req,res)=>{
 
     //hash token before saving to db(l'algorithme de hachage SHA-256)
     const hashedToken = crypto.createHash("sha256").update(resetToken).digest("hex")
-    console.log(hashedToken)
+    
+    //save token to db
+    await new Token({
+        userId: user._id,
+        token : hashedToken,
+        createdAt: Date.now(),
+        expiresAt: Date.now()+30*(60*1000)//thirty minutes
+
+    }).save()
+
+    //construct reset url
+    const resetUrl = `${process.env.FRONTEND_URL}/resetpassword/${resetToken}`
+
+    //reset email 
+    const message = `
+        <h2>Hello ${user.name}</h2>
+        <p>please use the url below to reset your password</p>
+        <p>This rreset link is valid for only 30 minutes</p>
+
+        <a href=${resetUrl} clicktracking=off>${resetUrl}</a>
+        
+        <p>Regards....</p>
+        <p>Pinvent Team</p>
+
+    `
 
     res.send("Forgot password")
 
