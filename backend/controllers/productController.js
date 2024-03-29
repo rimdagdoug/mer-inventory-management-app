@@ -2,7 +2,7 @@ const asyncHandler = require("express-async-handler");
 const { Error } = require("mongoose");
 const Product = require("../models/productModel");
 const { fileSizeFormatter } = require("../utils/fileUpload");
-
+const cloudinary = require("cloudinary").v2;
 
 const createProduct = asyncHandler(async(req,res) => {
     const {name,sku,category,quantity,price,description}= req.body;
@@ -16,9 +16,20 @@ const createProduct = asyncHandler(async(req,res) => {
     //handle image upload
     let fileDate = {}
     if (req.file) {
+
+         //save image to cloudinary
+        let uploadedFile;
+        try {
+            uploadedFile = await cloudinary.uploader.upload(req.file.path, {folder: "Pinvent App", resource_type: ""})
+        } catch (error) {
+            res.status(500)
+            throw new Error("image could not be uploaded")
+            
+        }
+
         fileDate={
             fileName: req.file.originalname,
-            filePath: req.file.path,
+            filePath: uploadedFile.secure_url,
             fileType: req.file.mimetype,
             fileSize: fileSizeFormatter(req.file.size, 2) ,
         }
