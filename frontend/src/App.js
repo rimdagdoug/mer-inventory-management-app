@@ -14,7 +14,7 @@ function App() {
       <Route path="/login" element={<Login></Login>}></Route>
       <Route path="/register" element={<Register></Register>}></Route>
       <Route path="/forgot" element={<Forgot></Forgot>}></Route>
-      <Route path="/resetpassword" element={<Reset></Reset>}></Route>
+      <Route path="/resetpassword/:resetToken" element={<Reset></Reset>}></Route>
     </Routes>
    </BrowserRouter>
   );
