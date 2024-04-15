@@ -9,7 +9,7 @@ const Header = () => {
               <span className="--fw-thin">Welcome, </span>
               <span className="--color-danger">rim</span>
             </h3>
-            <button onClick={logout} className="--btn --btn-danger">
+            <button className="--btn --btn-danger">
               Logout
             </button>
           </div>
