@@ -3,6 +3,8 @@ import styles from "./auth.module.scss";
 import { TiUserAddOutline } from "react-icons/ti";
 import Card from '../../components/card/Card';
 import { Link } from 'react-router-dom';
+import {toast} from "react-toastify"
+import { registerUser, validateEmail } from '../../services/authServices';
 
 
 const initialState = {
@@ -17,16 +19,49 @@ const Register = () => {
     const [formData, setformData] = useState(initialState)
     const {name,email,password,password2} = formData
 
+
+    // Cette fonction est appelée chaque fois qu'un champ de saisie
+    // du formulaire change. Elle met à jour l'état formData avec les
+    // nouvelles valeurs entrées par l'utilisateur.
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setformData({ ...formData, [name]: value });
       };
 
-    const register = (e) => {
+    const register = async (e) => {
         e.preventDefault();
 
+        if (!name || !email || !password) {
+            return toast.error("All fields are required");
+          }
+          if (password.length < 6) {
+            return toast.error("Passwords must be up to 6 characters");
+          }
+          if (!validateEmail(email)) {
+            return toast.error("Please enter a valid email");
+          }
+          if (password !== password2) {
+            return toast.error("Passwords do not match");
+          }
 
-        console.log(formData)
+
+          const userData = {
+            name,
+            email,
+            password,
+          };
+          setIsLoading(true);
+          try {
+            const data = await registerUser(userData);
+            // console.log(data);
+            console.log(data)
+            setIsLoading(false);
+          } catch (error) {
+            setIsLoading(false);
+            console.log(error.message)
+          }
+
+        
     };
 
 
