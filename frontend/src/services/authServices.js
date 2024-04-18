@@ -41,7 +41,7 @@ export const validateEmail = (email) => {
       
       );
       if (response.statusText === "OK") {
-        toast.success("Login successfully....");
+        toast.success("Login successfully");
       }
       return response.data;
     } catch (error) {
