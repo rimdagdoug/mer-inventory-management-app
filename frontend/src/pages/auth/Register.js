@@ -1,10 +1,35 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from "./auth.module.scss";
 import { TiUserAddOutline } from "react-icons/ti";
 import Card from '../../components/card/Card';
 import { Link } from 'react-router-dom';
 
+
+const initialState = {
+    name: "",
+    email:"",
+    password:"",
+    password2:"",
+}
+
 const Register = () => {
+    const [isLoading, setIsLoading] = useState(false)
+    const [formData, setformData] = useState(initialState)
+    const {name,email,password,password2} = formData
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setformData({ ...formData, [name]: value });
+      };
+
+    const register = (e) => {
+        e.preventDefault();
+
+
+        console.log(formData)
+    };
+
+
   return (
     <div className={`container ${styles.auth}`}>
         <Card >
@@ -14,11 +39,11 @@ const Register = () => {
                 </div>
                 <h2>Register</h2>
 
-                <form>
-                <input type='text' placeholder='Name' required name='name'></input>
-                    <input type='email' placeholder='Email' required name='email'></input>
-                    <input type='password' placeholder='Password' required name='password'></input>
-                    <input type='password' placeholder='Confirm Password' required name='password'></input>
+                <form onSubmit={register}>
+                    <input type='text' placeholder='Name' required name='name' value={name} onChange={handleInputChange}></input>
+                    <input type='email' placeholder='Email' required name='email' value={email} onChange={handleInputChange}></input>
+                    <input type='password' placeholder='Password' required name='password' value={password} onChange={handleInputChange}></input>
+                    <input type='password' placeholder='Confirm Password' required name='password2' value={password2} onChange={handleInputChange}></input>
                     <button type='submit' className='--btn --btn-primary --btn-block'>Register</button>
                 </form>
             
