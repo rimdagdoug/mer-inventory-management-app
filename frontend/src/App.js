@@ -8,11 +8,17 @@ import Dashboard from "./pages/dashboard/Dashboard" ;
 
 import Sidebar from "./components/sidebar/Sidebar";
 import Layout from "./components/layout/Layout";
+import axios from "axios"
+import { ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+axios.defaults.withCredentials  = true;
 
 
 function App() {
   return (
    <BrowserRouter>
+   <ToastContainer />
     <Routes>
       <Route path="/" element={<Home></Home>}></Route>
       <Route path="/login" element={<Login></Login>}></Route>
