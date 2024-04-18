@@ -7,6 +7,7 @@ import {toast} from "react-toastify"
 import { registerUser, validateEmail } from '../../services/authServices';
 import { SET_LOGIN, SET_NAME } from "../../redux/features/auth/authSlice";
 import { useDispatch } from "react-redux";
+import Loader from '../../components/loader/Loader';
 
 const initialState = {
     name: "",
@@ -71,6 +72,7 @@ const Register = () => {
 
   return (
     <div className={`container ${styles.auth}`}>
+      {isLoading && <Loader></Loader>}
         <Card >
             <div className={styles.form}>
                 <div className='--flex-center'>
