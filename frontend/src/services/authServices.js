@@ -55,13 +55,29 @@ export const validateEmail = (email) => {
 
 
   //Logout User
-   //Login user
    export const logoutUser = async () => {
     try {
           await axios.get(
         `${BACKEND_URL}/api/users/logout`,
       
       );
+    } catch (error) {
+      const message =
+        (error.response && error.response.data && error.response.data.message) ||
+        error.message ||
+        error.toString();
+      toast.error(message);
+    }
+  };
+
+  // Forgot Password
+export const forgotPassword = async (userData) => {
+    try {
+      const response = await axios.post(
+        `${BACKEND_URL}/api/users/forgotpassword`,
+        userData
+      );
+      toast.success(response.data.message);
     } catch (error) {
       const message =
         (error.response && error.response.data && error.response.data.message) ||
