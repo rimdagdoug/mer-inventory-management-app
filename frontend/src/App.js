@@ -15,6 +15,7 @@ import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { getLoginStatus } from "./services/authServices";
 import { SET_LOGIN } from "./redux/features/auth/authSlice";
+import AddProduct from "./pages/addProduct/AddProduct";
 
 
 axios.defaults.withCredentials  = true;
@@ -29,7 +30,7 @@ function App() {
     }
     loginStatus();
   }, [dispatch]) ;
-  
+
   return (
    <BrowserRouter>
    <ToastContainer />
@@ -45,6 +46,16 @@ function App() {
         <Sidebar>
             <Layout>
               <Dashboard></Dashboard>
+            </Layout>
+        </Sidebar>}>
+
+      </Route>
+
+
+      <Route path="/add-product" element={
+        <Sidebar>
+            <Layout>
+              <AddProduct></AddProduct>
             </Layout>
         </Sidebar>}>
 
