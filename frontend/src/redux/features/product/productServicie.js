@@ -15,4 +15,4 @@ const productService = {
     createProduct
 }
 
-export default productService;
+export default productService
