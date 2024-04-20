@@ -27,9 +27,8 @@ const Dashboard = () => {
 
   return (
     <div>
-      <h2>Dashboard</h2>
-      <ProductList></ProductList>
-    </div>
+    <ProductList products={products} isLoading={isLoading} />
+  </div>
   )
 }
 

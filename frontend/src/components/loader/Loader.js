@@ -4,6 +4,7 @@ import ReactDom from "react-dom"
 import "./Loader.scss"
 
 
+
 const Loader = () => {
   return ReactDom.createPortal(
     <div className='wrapper'>
