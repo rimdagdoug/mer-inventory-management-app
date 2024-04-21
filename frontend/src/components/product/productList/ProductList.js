@@ -7,6 +7,9 @@ import Search from '../../search/Search';
 import { FILTER_PRODUCTS, selectFilteredPoducts } from '../../../redux/features/product/filterSlice';
 import { useDispatch, useSelector } from "react-redux";
 import ReactPaginate from 'react-paginate';
+import { confirmAlert } from 'react-confirm-alert'; 
+import 'react-confirm-alert/src/react-confirm-alert.css';
+import { deleteProduct, getProducts } from '../../../redux/features/product/productSlice';
 
 
 const ProductList = ({ products, isLoading }) => {
@@ -21,6 +24,29 @@ const ProductList = ({ products, isLoading }) => {
           return shortenedText;
         }
         return text;
+      };
+
+      const delProduct = async (id) => {
+        console.log(id);
+        await dispatch(deleteProduct(id));
+        await dispatch(getProducts());
+      };
+    
+      const confirmDelete = (id) => {
+        confirmAlert({
+          title: "Delete Product",
+          message: "Are you sure you want to delete this product.",
+          buttons: [
+            {
+              label: "Delete",
+              onClick: () => delProduct(id),
+            },
+            {
+              label: "Cancel",
+              // onClick: () => alert('Click No')
+            },
+          ],
+        });
       };
 
       
@@ -106,6 +132,7 @@ const ProductList = ({ products, isLoading }) => {
                           <FaTrashAlt
                             size={20}
                             color={"red"}
+                            onClick={() => confirmDelete(_id)}
                           />
                         </span>
                       </td>
