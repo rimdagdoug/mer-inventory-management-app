@@ -4,6 +4,9 @@ import useRedirectLoggedOutUser from '../../customHook/useRedirectLoggedOutUser'
 import { useDispatch } from 'react-redux';
 import { getUser } from '../../services/authServices';
 import { SET_NAME, SET_USER } from '../../redux/features/auth/authSlice';
+import { SpinnerImg } from '../../components/loader/Loader';
+import { Link } from 'react-router-dom';
+import Card from '../../components/card/Card';
 
 const Profile = () => {
     useRedirectLoggedOutUser("/login");
@@ -27,7 +30,39 @@ const Profile = () => {
         getUserData();
       }, [dispatch]);
   return (
-    <div>Profile</div>
+    <div className="profile --my2">
+      {isLoading && <SpinnerImg />}
+      <>
+        {!isLoading && profile === null ? (
+          <p>Something went wrong, please reload the page...</p>
+        ) : (
+          <Card cardClass={"card --flex-dir-column"}>
+            <span className="profile-photo">
+              <img src={profile?.photo} alt="profilepic" />
+            </span>
+            <span className="profile-data">
+              <p>
+                <b>Name : </b> {profile?.name}
+              </p>
+              <p>
+                <b>Email : </b> {profile?.email}
+              </p>
+              <p>
+                <b>Phone : </b> {profile?.phone}
+              </p>
+              <p>
+                <b>Bio : </b> {profile?.bio}
+              </p>
+              <div>
+                <Link to="/edit-profile">
+                  <button className="--btn --btn-primary">Edit Profile</button>
+                </Link>
+              </div>
+            </span>
+          </Card>
+        )}
+      </>
+    </div>
   )
 }
 
